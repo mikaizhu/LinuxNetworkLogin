@@ -29,7 +29,10 @@ else
 fi
 
 # 如果没连上网，则自动联网
-./net_login.sh ${networkOk}
+# 因为net login中有exit，如果不开另一个进程，则会将这个进程退出
+./net_login.sh ${networkOk} &
+# 等待上个文件进程，结束后往下执行
+wait $!
 
 # part2: 检测frp是否成功开启
 # 配置frpc开机自动启动, 这里两种选择1. 自动使用脚本启动，2. 使用systermctl命令，配置文件开机启动
