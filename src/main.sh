@@ -64,7 +64,7 @@ else
 fi
 
 if !(${frp_listening}); then
-  nohub ./${frp_dir}/frpc -c ./${frp_dir}/frpc.ini >/dev/null 2>&1 &
+  nohup ${frp_dir}/frpc -c ${frp_dir}/frpc.ini >${frp_dir}/frp.log 2>&1 & # 记录运行日志
   lsof -i:7000 | grep -vq frp
   if [ $? -eq 0 ]; then
     echo "监听成功"
