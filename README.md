@@ -112,5 +112,14 @@ cat nohub.out
 
 这里有两种选择，一是systemclt控制frp启动，二是通过shell控制脚本启动
 
+# 使用教程
+
+```
+chmod +x main.sh net_login.sh
+./main.sh
+```
+
 # TODO
 - [ ] 添加可以翻墙的脚本，自动检测翻墙
+- [ ] 添加信息控制文件，和Linux结合, 方便信息填写管理
+- [ ] 使用Dockerfile配置成docker
