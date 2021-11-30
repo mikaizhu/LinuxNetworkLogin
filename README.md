@@ -105,3 +105,12 @@ cat nohub.out
 比如使用sudo命令，会要求我们输入管理员密码，还有其他操作可能会要求用户输入
 
 使用expect，可以模拟输入流，不是明文输入
+
+参考：https://github.com/dunwu/linux-tutorial/blob/master/docs/linux/expect.md
+
+## frp开机自启动
+
+这里有两种选择，一是systemclt控制frp启动，二是通过shell控制脚本启动
+
+# TODO
+- [ ] 添加可以翻墙的脚本，自动检测翻墙
