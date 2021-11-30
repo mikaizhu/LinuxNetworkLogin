@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # part0: 设置crontab，并且每几分钟检测是否联网
-main_dir=/home/zml/Desktop # main.sh 脚本的目录
-frp_dir=${main_dir} # 填写frp脚本的路径
 
+source ./config
 # 使用默认的编辑器，这样进入crontab就不用选择编辑器了
 # grep -v 表示排除自己进程 -q 表示不输出
 grep -q "export EDITOR=/usr/bin/vim" ~/.bashrc

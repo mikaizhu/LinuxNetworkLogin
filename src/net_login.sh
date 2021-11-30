@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-username="xxxx" # 用户名
-passwd="xxxxxx" # 密码
-drcom_website="https://drcom.szu.edu.cn/a70.htm"
+source ./config
 networkOk=$1
 
 if !(${networkOk});then # 注意使用否定的时候用！并且要加括号
