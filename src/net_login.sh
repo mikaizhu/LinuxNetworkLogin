@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-frpc_path=/home/zml/Desktop/frp_0.38.0_linux_amd64
 username="xxxx" # 用户名
 passwd="xxxxxx" # 密码
 drcom_website="https://drcom.szu.edu.cn/a70.htm"

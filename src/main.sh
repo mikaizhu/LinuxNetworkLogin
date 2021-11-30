@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # part0: 设置crontab，并且每几分钟检测是否联网
 main_dir=/home/zml/Desktop # main.sh 脚本的目录
-frp_dir=
-networkOk=
+frp_dir=${main_dir} # 填写frp脚本的路径
 
 # 使用默认的编辑器，这样进入crontab就不用选择编辑器了
 # grep -v 表示排除自己进程 -q 表示不输出
@@ -19,7 +18,7 @@ if [ $? -ne 0 ]; then
   (crontab -l 2>/dev/null; echo "*/30 * * * * cd ${main_dir} && ./main.sh") | crontab -
   expect <<EOF
     spawn service cron restart
-    expect "Password*" {send "1234\n"}
+    expect "Password*" {send "1234\n"} # 这里填写Linux管理员密码
     expect eof
 EOF
 fi
@@ -27,7 +26,7 @@ fi
 # 然后应该通过日志检查crontab的运行效果，日志位置/var/log/syslog, 自己通过sudo查看
 
 # part1: 检测上网是否成功
-
+networkOk=
 ping -c 1 baidu.com > /dev/null 2>&1
 if [ $? -eq 0 ];then
     networkOk=true
