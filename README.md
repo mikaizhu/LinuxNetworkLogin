@@ -5,10 +5,24 @@ OS: Linux
 代码说明：完成Linux自动检查是否联网，如果没有联网，则自动登陆账号连接
 
 文件目录说明：
-- src/*: 
-    - network_login.sh: 检测当前是否能上网，不能上网则自动连接
+- src: 
+    - main.sh 主文件
+    - net_login.sh: 检测当前是否能上网，不能上网则自动连接
+
+# 使用教程
+
+step1: 配置好config文件中的所有信息
+
+step2: 在Linux系统中，拷贝该仓库，然后运行下面代码
+```
+cd src/
+chmod +x main.sh net_login.sh
+./main.sh
+```
 
 # 流程说明
+
+frp: 好像不需要客户端联网，也能连接
 
 ## Linux自动定时检测是否联网
 
@@ -91,7 +105,7 @@ nohup ./frpc -c ./frpc.ini >/dev/null 2>&1 &
 查看后台是否运行：
 
 ```
-ps -aux | grep frp
+lsof -i:7000 | grep frp
 ```
 
 查看运行状态：
@@ -108,18 +122,18 @@ cat nohub.out
 
 参考：https://github.com/dunwu/linux-tutorial/blob/master/docs/linux/expect.md
 
+expect 中如何使用Linux脚本变量？
+
+> 如果在shell脚本中使用expect脚本，在expect中直接使用$变量
+> 如果两者是不同的文件，要在expect脚本使用linux变量, `export a="test"` `set a_exp \$::env(a)` 
+> 参考：https://www.cnblogs.com/TDXYBS/p/11012089.html
+
 ## frp开机自启动
 
 这里有两种选择，一是systemclt控制frp启动，二是通过shell控制脚本启动
 
-# 使用教程
-
-```
-chmod +x main.sh net_login.sh
-./main.sh
-```
 
 # TODO
 - [ ] 添加可以翻墙的脚本，自动检测翻墙
-- [ ] 添加信息控制文件，和Linux结合, 方便信息填写管理
 - [ ] 使用Dockerfile配置成docker
+- [x] 添加信息控制文件，和Linux结合, 方便信息填写管理

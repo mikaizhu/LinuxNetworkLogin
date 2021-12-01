@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-
-username="xxxx" # 用户名
-passwd="xxxxxx" # 密码
-drcom_website="https://drcom.szu.edu.cn/a70.htm"
+username="xxxx" # 上网用户名
+passwd="xxxxxx" # 上网密码
+drcom_website="https://drcom.szu.edu.cn/a70.htm" # 上网登陆网址，这个不用修改
 main_dir=/home/zml/Desktop # main.sh 脚本的目录
-frp_dir=${main_dir} # 填写frp脚本的路径
+frp_dir=/home/zml/Desktop # 填写frp脚本的路径
+service_pwd=xxxx # 服务器管理员密码

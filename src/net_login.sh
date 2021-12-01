@@ -6,7 +6,7 @@ if !(${networkOk});then # 注意使用否定的时候用！并且要加括号
   expect <<EOF
     spawn service network-manager restart
     expect {
-    "Password" {send "123456\n"}
+    "Password" {send "${service_pwd}\n"}
     }
     expect eof
 EOF
