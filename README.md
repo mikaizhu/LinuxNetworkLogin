@@ -132,6 +132,52 @@ expect 中如何使用Linux脚本变量？
 
 这里有两种选择，一是systemclt控制frp启动，二是通过shell控制脚本启动
 
+## 内网穿透
+
+## 文件传输
+
+现在通过内网穿透，但是要传输文件的话，使用scp
+
+```
+scp -P 6000 your_file zwl@client_ip:path
+```
+
+# Linux翻墙教程
+
+使用软件：
+- v2ray-core
+- v2rayA
+
+安装方法：
+
+```
+# 先安装v2ray-core
+curl -Ls https://mirrors.v2raya.org/go.sh | sudo bash
+
+# 安装v2rayA
+wget -qO - https://apt.v2raya.mzz.pub/key/public-key.asc | sudo apt-key add -
+echo "deb https://apt.v2raya.mzz.pub/ v2raya main" | sudo tee /etc/apt/sources.list.d/v2raya.list
+sudo apt update
+sudo apt install v2raya
+
+# 启动v2ray
+sudo systemctl start v2raya.service
+
+# 设置开机启动
+sudo systemctl enable v2raya.service
+
+# 设置v2ray
+启动v2ray后, 服务器web：http://localhost:2017可以设置v2ray，但是远程ssh访问，
+所以可以端口转发
+# 通过端口转发连接服务器
+ssh -p 6000 -L 8877:localhost:2017 zwl@117.50.172.250
+
+# 在本地浏览器输入localhost:8877即可
+
+# 测试可不可以翻墙使用curl命令而不是ping命令，ping不能走tcp协议
+curl https://github.com/mikaizhu/SocialTrustProject
+# 如果有返回说明成功
+```
 
 # TODO
 - [ ] 添加可以翻墙的脚本，自动检测翻墙
