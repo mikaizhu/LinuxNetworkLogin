@@ -178,8 +178,15 @@ ssh -p 6000 -L 8877:localhost:2017 zwl@117.50.172.250
 curl https://github.com/mikaizhu/SocialTrustProject
 # 如果有返回说明成功
 ```
+参考教程：
+- https://zhuanlan.zhihu.com/p/414998586
 
 # TODO
-- [ ] 添加可以翻墙的脚本，自动检测翻墙
+- [ ] 修改名字为LabLinuxService
+- [ ] 添加自动检测IP，并可以自动修改脚本IP
+- [ ] 客户端和服务端文件分离，添加说明文件
+- [ ] 有时间看看YouTube上使用shell控制clash
+- [ ] 电脑只要开机就能自动使用
 - [ ] 使用Dockerfile配置成docker
+- [x] 添加可以翻墙的脚本，自动检测翻墙
 - [x] 添加信息控制文件，和Linux结合, 方便信息填写管理
