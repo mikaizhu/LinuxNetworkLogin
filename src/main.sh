@@ -13,8 +13,9 @@ fi
 # 使用crontab -l检查是否写入
 # 如果crontab 本来就有任务，则不添加, grep 要匹配空格，必须天际\
 crontab -l | grep -qv "main.sh" 
+# 设置每周2，3，5，6 天，启动自动检测网络和frp
 if [ $? -ne 0 ]; then
-  (crontab -l 2>/dev/null; echo "*/30 * * * * cd ${main_dir} && ./main.sh") | crontab -
+  (crontab -l 2>/dev/null; echo "*/30 * 2,3,5,6,0 * * cd ${main_dir} && ./main.sh") | crontab -
   expect <<EOF
     spawn service cron restart
     expect "Password*" {send "1234\n"} # 这里填写Linux管理员密码
