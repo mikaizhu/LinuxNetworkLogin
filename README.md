@@ -5,10 +5,24 @@ OS: Linux
 代码说明：完成Linux自动检查是否联网，如果没有联网，则自动登陆账号连接
 
 文件目录说明：
-- src/*: 
-    - network_login.sh: 检测当前是否能上网，不能上网则自动连接
+- src: 
+    - main.sh 主文件
+    - net_login.sh: 检测当前是否能上网，不能上网则自动连接
+
+# 使用教程
+
+step1: 配置好config文件中的所有信息
+
+step2: 在Linux系统中，拷贝该仓库，然后运行下面代码
+```
+cd src/
+chmod +x main.sh net_login.sh
+./main.sh
+```
 
 # 流程说明
+
+frp: 好像不需要客户端联网，也能连接
 
 ## Linux自动定时检测是否联网
 
@@ -91,7 +105,7 @@ nohup ./frpc -c ./frpc.ini >/dev/null 2>&1 &
 查看后台是否运行：
 
 ```
-ps -aux | grep frp
+lsof -i:7000 | grep frp
 ```
 
 查看运行状态：
@@ -108,16 +122,64 @@ cat nohub.out
 
 参考：https://github.com/dunwu/linux-tutorial/blob/master/docs/linux/expect.md
 
+expect 中如何使用Linux脚本变量？
+
+> 如果在shell脚本中使用expect脚本，在expect中直接使用$变量
+> 如果两者是不同的文件，要在expect脚本使用linux变量, `export a="test"` `set a_exp \$::env(a)` 
+> 参考：https://www.cnblogs.com/TDXYBS/p/11012089.html
+
 ## frp开机自启动
 
 这里有两种选择，一是systemclt控制frp启动，二是通过shell控制脚本启动
 
-# 使用教程
+## 内网穿透
+
+## 文件传输
+
+现在通过内网穿透，但是要传输文件的话，使用scp
 
 ```
-chmod +x main.sh net_login.sh
-./main.sh
+scp -P 6000 your_file zwl@client_ip:path
 ```
+
+# Linux翻墙教程
+
+使用软件：
+- v2ray-core
+- v2rayA
+
+安装方法：
+
+```
+# 先安装v2ray-core
+curl -Ls https://mirrors.v2raya.org/go.sh | sudo bash
+
+# 安装v2rayA
+wget -qO - https://apt.v2raya.mzz.pub/key/public-key.asc | sudo apt-key add -
+echo "deb https://apt.v2raya.mzz.pub/ v2raya main" | sudo tee /etc/apt/sources.list.d/v2raya.list
+sudo apt update
+sudo apt install v2raya
+
+# 启动v2ray
+sudo systemctl start v2raya.service
+
+# 设置开机启动
+sudo systemctl enable v2raya.service
+
+# 设置v2ray
+启动v2ray后, 服务器web：http://localhost:2017可以设置v2ray，但是远程ssh访问，
+所以可以端口转发
+# 通过端口转发连接服务器
+ssh -p 6000 -L 8877:localhost:2017 zwl@117.50.172.250
+
+# 在本地浏览器输入localhost:8877即可
+
+# 测试可不可以翻墙使用curl命令而不是ping命令，ping不能走tcp协议
+curl https://github.com/mikaizhu/SocialTrustProject
+# 如果有返回说明成功
+```
+参考教程：
+- https://zhuanlan.zhihu.com/p/414998586
 
 OS: Linux
 场景：现在学校内部有服务器，连接的是内部校园网，要想使用服务器只能在学校内部使用，出了学校就不能连接，现在需要在学校外面也能访问到学校实验室服务器。
@@ -197,6 +259,11 @@ ssh -p 6000 zml@117.50.172.250
 - 公网服务器的6000端口一定要开放，可以在服务器上运行 `netstat -ant | grep 6000`， 如果有输出，则说明端口正在监听
 
 # TODO
-- [ ] 添加可以翻墙的脚本，自动检测翻墙
-- [ ] 添加信息控制文件，和Linux结合, 方便信息填写管理
+- [ ] 修改名字为LabLinuxService
+- [ ] 添加自动检测IP，并可以自动修改脚本IP
+- [ ] 客户端和服务端文件分离，添加说明文件
+- [ ] 有时间看看YouTube上使用shell控制clash
+- [ ] 电脑只要开机就能自动使用
 - [ ] 使用Dockerfile配置成docker
+- [x] 添加可以翻墙的脚本，自动检测翻墙
+- [x] 添加信息控制文件，和Linux结合, 方便信息填写管理

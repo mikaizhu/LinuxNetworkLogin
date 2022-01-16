@@ -18,7 +18,7 @@ if [ $? -ne 0 ]; then
   (crontab -l 2>/dev/null; echo "*/30 * 2,3,5,6,0 * * cd ${main_dir} && ./main.sh") | crontab -
   expect <<EOF
     spawn service cron restart
-    expect "Password*" {send "1234\n"} # 这里填写Linux管理员密码
+    expect "Password*" {send "${service_pwd}\n"} # 这里填写Linux管理员密码
     expect eof
 EOF
 fi
