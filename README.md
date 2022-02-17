@@ -238,14 +238,14 @@ sudo firewall-cmd --query-port=000/tcp -->查看7000端口是否开启
 客户端配置：
 ```
 [common]
-server_addr = 117.50.172.250
+server_addr = 117.xx.xx2.xx0
 server_port = 7000
 tls_enable = true
 token = zml666
 
 [ssh]
 type = tcp
-local_ip = 172.31.100.184
+local_ip = 172.xx.xx0.xx4
 local_port = 22
 remote_port = 6000
 ```
@@ -263,7 +263,7 @@ token = zml666
 ```
 6. 最后本地电脑链接服务器
 ```
-ssh -p 6000 zml@117.50.172.250
+ssh -p 6000 zml@117.xx.xx2.xx0
 ```
 
 注意：
