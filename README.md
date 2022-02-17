@@ -141,6 +141,19 @@ expect 中如何使用Linux脚本变量？
 ```
 scp -P 6000 your_file zwl@client_ip:path
 ```
+# 检测是否受到攻击
+
+```
+ssh -p 6000 zwl@117.xx.xxx.xxx 'journalctl --since="2021-09-01" | grep sshd' > ssh.log
+```
+
+# 修改端口
+
+如果受到攻击，我们要修改接入端口，操作如下：
+
+- 注意修改为强密码, 同时检查root用户能不能登陆
+- 修改client中的frpc.ini文件中的remote_port参数, 然后重启frp，使用`./main.sh` 
+- 登陆公网服务器，设置防火墙配置，开启IP
 
 # Linux翻墙教程
 
@@ -170,7 +183,7 @@ sudo systemctl enable v2raya.service
 启动v2ray后, 服务器web：http://localhost:2017可以设置v2ray，但是远程ssh访问，
 所以可以端口转发
 # 通过端口转发连接服务器
-ssh -p 6000 -L 8877:localhost:2017 zwl@117.50.172.250
+ssh -p 6000 -L 8877:localhost:2017 zwl@117.xx.xxx.xxx
 
 # 在本地浏览器输入localhost:8877即可
 
@@ -184,9 +197,9 @@ curl https://github.com/mikaizhu/SocialTrustProject
 # TODO
 - [ ] 修改名字为LabLinuxService
 - [ ] 添加自动检测IP，并可以自动修改脚本IP
-- [ ] 客户端和服务端文件分离，添加说明文件
 - [ ] 有时间看看YouTube上使用shell控制clash
-- [ ] 电脑只要开机就能自动使用
 - [ ] 使用Dockerfile配置成docker
+- [x] 客户端和服务端文件分离，添加说明文件
+- [x] 电脑只要开机就能自动使用
 - [x] 添加可以翻墙的脚本，自动检测翻墙
 - [x] 添加信息控制文件，和Linux结合, 方便信息填写管理
