@@ -194,6 +194,83 @@ curl https://github.com/mikaizhu/SocialTrustProject
 参考教程：
 - https://zhuanlan.zhihu.com/p/414998586
 
+OS: Linux
+场景：现在学校内部有服务器，连接的是内部校园网，要想使用服务器只能在学校内部使用，出了学校就不能连接，现在需要在学校外面也能访问到学校实验室服务器。
+使用技术：内网穿透
+> 内网穿透指的是，两个只有内网的节点，通过公网节点连接起来，这样处于两个内网的节点就能相互通信。就比如家庭局域网中的个人电脑想控制实验室的服务器，就可以通过内网穿透技术进行连接。内网穿透也和VPN有关，VPN两个技术：1. 通信加密，2. 异地组网--将两个不同地方的网络组合起来变成同一个网络。
+
+使用软件：[FRP](https://github.com/fatedier/frp)
+效果：最终可以在任何能上网的地方，通过ssh连接实验室服务器，通过`ssh -p 6000 实验室服务器用户名@公网IP`登陆
+# 最新脚本
+地址：https://github.com/mikaizhu/LinuxNetworkLogin
+脚本内容：
+- Linux开机自动联网，并且每隔半小时检查网络连接情况，断开则自动连接
+- 开机自动启动frpc脚本
+# 操作方法
+1. 由于内网穿透需要一个公网IP，所以需要先购买一个有公网IP的云服务器。购买好服务器后，接下来要配置防火墙端口，这个在购买的网站上对云服务器端口配置，这里设置打开6000端口和7000端口。
+```
+sudo firewall-cmd --permanent --add-port=6000/tcp -->开启6000端口  
+sudo firewall-cmd --permanent --add-port=7000/tcp -->开启7000端口  
+sudo firewall-cmd --reload -->重启firewall让修改的配置生效  
+sudo firewall-cmd --query-port=6000/tcp -->查看6000端口是否开启  
+sudo firewall-cmd --query-port=000/tcp -->查看7000端口是否开启
+```
+2. 定义有公网IP的服务器叫服务端，学校实验室服务器（内网）为客户端。在服务端和客户端下载FRP软件，地址：https://github.com/fatedier/frp/releases ，Linux服务器是amd86x64位操作系统，因此下载Linux amd 64. 
+3. 检查服务器是否能上网，一定要保持服务端和客户端能够上网
+> 因为Linux服务器上网经常断开，这可能是网卡问题或者上网的服务器问题
+> ```
+> 先在命令行输入：service network-manager restart
+> 然后执行下面脚本：(这里使用你自己的账号)
+> #!/usr/bin/env bash
+> username="380727"
+> passwd="xxxxx"
+> drcom_website="https://drcom.szu.edu.cn/a70.htm"
+> curl \
+>  -d "DDDDD=${username}" \
+>  -d "upass=${passwd}" \
+>  -d "0MKKey=123456" \
+>  -X POST "${drcom_website}" \
+>   | iconv --from-code=GB2312 --to-code=UTF-8  # delete this line if you do not need it
+> ```
+
+4. 服务端与客户端均下载好后，在服务端编辑frps.ini文件，在客户端编辑frpc.ini文件，配置内容如下
+
+客户端配置：
+```
+[common]
+server_addr = 117.50.172.250
+server_port = 7000
+tls_enable = true
+token = zml666
+
+[ssh]
+type = tcp
+local_ip = 172.31.100.184
+local_port = 22
+remote_port = 6000
+```
+服务端配置：
+```
+[common]
+bind_port = 7000
+tls_enable = true
+token = zml666
+```
+5. 先启动服务端的frp, 再启动客户端的frp
+```
+./frps -c ./frps.ini
+./frpc -c ./frpc.ini
+```
+6. 最后本地电脑链接服务器
+```
+ssh -p 6000 zml@117.50.172.250
+```
+
+注意：
+- zml是客户端的用户名，后面IP是公网IP，而不是公网服务器的用户名
+- 两边一定要联网
+- 公网服务器的6000端口一定要开放，可以在服务器上运行 `netstat -ant | grep 6000`， 如果有输出，则说明端口正在监听
+
 # TODO
 - [ ] 修改名字为LabLinuxService
 - [ ] 添加自动检测IP，并可以自动修改脚本IP
